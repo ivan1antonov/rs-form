@@ -1,5 +1,5 @@
-export interface FormData {
-  id: string;
+export interface ModalFormData {
+  id?: string;
   name: string;
   age: number;
   email: string;
@@ -7,5 +7,5 @@ export interface FormData {
   gender: string;
   country: string;
   acceptTerms: boolean;
-  pictureBase64: string;
+  pictureBase64?: string;
 }

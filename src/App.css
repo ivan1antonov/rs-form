@@ -17,6 +17,22 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+.modal-overlay {
+  position: 'fixed';
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+}
+.modal-inside {
+  background: 'white';
+  padding: 20;
+  border-radius: 8;
+}
 
 @keyframes logo-spin {
   from {
