@@ -18,20 +18,42 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 .modal-overlay {
-  position: 'fixed';
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: 'flex';
-  justify-content: 'center';
-  align-items: 'center';
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .modal-inside {
   background: 'white';
   padding: 20;
   border-radius: 8;
+}
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 12px;
+}
+.modal-inside {
+  overflow: hidden;
+}
+select {
+  margin-left: 5px;
+}
+
+button {
+  margin-bottom: 20px;
+}
+
+label {
+  margin-bottom: 10px;
 }
 
 @keyframes logo-spin {

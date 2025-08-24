@@ -28,7 +28,7 @@ export default function ControlledForm({ onSubmit }: IOnSubmit) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="form" role="form" onSubmit={handleSubmit(onSubmit)}>
       <h2>Controlled Form</h2>
 
       <label>

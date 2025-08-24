@@ -29,7 +29,13 @@ export default function UncontrolledForm({ onSubmit }: Props) {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form
+      className="form"
+      ref={formRef}
+      onSubmit={handleSubmit}
+      data-testid="uncontrolled-form"
+      aria-label="Uncontrolled Form"
+    >
       <h2>Uncontrolled Form</h2>
 
       <label>

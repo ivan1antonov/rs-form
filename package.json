@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "prepare": "husky && chmod ug+x .husky/*",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "test:coverage": "vitest run --coverage",
+    "test:ci": "c8 --check-coverage --lines 80 --functions 50 --branches 50 vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -28,6 +30,7 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
