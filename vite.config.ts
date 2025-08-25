@@ -3,9 +3,20 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.ts',
+    setupFiles: './src/test/setup.ts',
+    coverage: {
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: [
+        'src/**/*.test.{js,jsx,ts,tsx}',
+        'src/**/*.spec.{js,jsx,ts,tsx}',
+        'src/index.{js,jsx,ts,tsx}',
+        'src/setupTests.{js,ts}',
+        'src/**/*.d.ts',
+      ],
+    },
   },
 });
