@@ -4,12 +4,12 @@ const Header = () => {
   return (
     <header className="header">
       <ul className="navigation">
-        <li className="navigation_list">
-          <Link to="/"> Home </Link>
-        </li>
-        <li className="navigation_list">
-          <Link to="/detail"> Detail </Link>
-        </li>
+        <Link to="/">
+          <li className="navigation_list"> Home </li>
+        </Link>
+        <Link to="/details:0">
+          <li className="navigation_list"> Detail </li>
+        </Link>
       </ul>
     </header>
   );

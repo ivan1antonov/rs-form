@@ -1,3 +1,5 @@
+import data from '../../assets/owid-co2-data.json';
+
 interface Info {
   iso_code: string;
   data: { year: string; population?: number }[];
@@ -9,13 +11,9 @@ interface ICountry {
   population: number | 'N/a';
 }
 
-self.onmessage = async (event) => {
-  const url = event.data;
+self.onmessage = () => {
   try {
-    const response = await fetch(url);
-    const json = await response.json();
-
-    const result: ICountry[] = Object.entries(json).map(([country, info]) => {
+    const result: ICountry[] = Object.entries(data).map(([country, info]) => {
       const { iso_code, data } = info as Info;
       return {
         country,

@@ -18,7 +18,7 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #bebfc4;
   text-decoration: inherit;
 }
 a:hover {
@@ -73,6 +73,7 @@ button:focus-visible {
 main {
   display: flex;
   justify-content: center;
+  margin-bottom: 30px;
 }
 .table {
   border: 1px solid whitesmoke;
@@ -82,13 +83,14 @@ main {
   border: 1px solid white;
   background-color: #646cff;
 }
+.results_newColomn {
+  background-color: #213547;
+}
 tbody > tr:nth-child(even) {
   background-color: chocolate;
 }
-.thead_country,
-.thead_population,
-.thead_iso {
-  min-width: 200px;
+th {
+  min-width: 130px;
 }
 
 @media (prefers-color-scheme: light) {

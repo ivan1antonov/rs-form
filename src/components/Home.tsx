@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ICountries {
   country: string;
@@ -12,7 +13,8 @@ const Home = () => {
 
   useEffect(() => {
     const worker = new Worker(
-      new URL('../services/worker.ts', import.meta.url)
+      new URL('../services/workers/worker.ts', import.meta.url),
+      { type: 'module' }
     );
 
     worker.onmessage = (event) => {
@@ -24,12 +26,12 @@ const Home = () => {
       setIsLoading(false);
     };
 
-    worker.postMessage(
-      new URL('../assets/owid-co2-data.json', import.meta.url).href
-    );
+    worker.postMessage('start');
 
     return () => worker.terminate();
   }, []);
+
+  const headers = countries ? Object.keys(countries[0]) : [];
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -37,17 +39,21 @@ const Home = () => {
     <table className="table">
       <thead className="thead">
         <tr>
-          <th className="thead thead_country">Country</th>
-          <th className="thead thead_population">Population</th>
-          <th className="thead thead_iso">ISO code</th>
+          {headers?.map((header) => (
+            <th key={header} className="thead">
+              {header}
+            </th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {countries?.map(({ country, population, iso }: ICountries, i) => (
-          <tr key={`${country}${i}`}>
-            <td>{country}</td>
-            <td>{population}</td>
-            <td>{iso}</td>
+        {countries?.map((country, i) => (
+          <tr key={`${country.iso}-${i}`}>
+            {Object.entries(country).map(([key, value]) => (
+              <td key={key}>
+                <Link to={`/details/${country.iso}`}>{value}</Link>
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>
