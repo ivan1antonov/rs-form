@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initState = { value: 'AFG' };
+interface SearchState {
+  value: string;
+}
+
+const initState: SearchState = { value: 'AFG' };
 
 const searchReducer = createSlice({
   name: 'searchIso',
@@ -13,3 +17,4 @@ const searchReducer = createSlice({
 });
 
 export const { setSearchIso } = searchReducer.actions;
+export default searchReducer.reducer;

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import type { rootState as RootState, AppDispatch } from '../store';
 
 import type { ICountryDetail } from '../services/workers/workerDetail';
 
@@ -8,6 +10,9 @@ interface IDetail extends ICountryDetail {
 }
 
 const Details = () => {
+  // const dispatch: AppDispatch = useDispatch();
+  // const searchIso = useSelector((state: RootState) => state.setSearchIso.value);
+
   const defaultId = 'AFG';
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
