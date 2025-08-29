@@ -51,7 +51,7 @@ const Home = () => {
           <tr key={`${country.iso}-${i}`}>
             {Object.entries(country).map(([key, value]) => (
               <td key={key}>
-                <Link to={`/details/${country.iso}`}>{value}</Link>
+                <Link to={`/details/${country.iso}-${i}`}>{value}</Link>
               </td>
             ))}
           </tr>
