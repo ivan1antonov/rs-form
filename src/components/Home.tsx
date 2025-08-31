@@ -1,39 +1,15 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Suspense } from 'react';
+import { wrapPromise } from '../utils/wrapPromise';
+import { loadCountries } from '../services/loadCountries';
 
-interface ICountries {
-  country: string;
-  iso: string;
-  population: number | 'N/a';
-}
+import type { ICountries } from '../types/types';
 
-const Home = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [countries, setCountries] = useState<ICountries[] | null>(null);
+const resource = wrapPromise(loadCountries());
 
-  useEffect(() => {
-    const worker = new Worker(
-      new URL('../services/workers/worker.ts', import.meta.url),
-      { type: 'module' }
-    );
-
-    worker.onmessage = (event) => {
-      if (event.data.error) {
-        console.log('Worker error: ', event.data.error);
-      } else {
-        setCountries(event.data);
-      }
-      setIsLoading(false);
-    };
-
-    worker.postMessage('start');
-
-    return () => worker.terminate();
-  }, []);
-
-  const headers = countries ? Object.keys(countries[0]) : [];
-
-  if (isLoading) return <p>Loading...</p>;
+const CountriesTable = () => {
+  const countries = resource.read() as ICountries[];
+  const headers = Object.keys(countries[0]);
 
   return (
     <table className="table">
@@ -51,7 +27,9 @@ const Home = () => {
           <tr key={`${country.iso}-${i}`}>
             {Object.entries(country).map(([key, value]) => (
               <td key={key}>
-                <Link to={`/details/${country.iso}-${i}`}>{value}</Link>
+                <Link to={`/details/${encodeURIComponent(value)}-${i}`}>
+                  {value}
+                </Link>
               </td>
             ))}
           </tr>
@@ -61,4 +39,10 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default function Home() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <CountriesTable />
+    </Suspense>
+  );
+}

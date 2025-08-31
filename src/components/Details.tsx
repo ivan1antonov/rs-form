@@ -1,22 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import type { rootState as RootState, AppDispatch } from '../store';
+import { wrapPromise } from '../utils/wrapPromise';
+import { loadCountryDetail } from '../services/loadCountryDetail';
+import type { IDetail } from '../types/types';
 
-import type { ICountryDetail } from '../services/workers/workerDetail';
+const DetailsContent = ({
+  resource,
+}: {
+  resource: ReturnType<typeof wrapPromise<IDetail>>;
+}) => {
+  const country = resource.read();
 
-interface IDetail extends ICountryDetail {
-  name: string;
-}
-
-const Details = () => {
-  // const dispatch: AppDispatch = useDispatch();
-  // const searchIso = useSelector((state: RootState) => state.setSearchIso.value);
-
-  const defaultId = 'AFG';
-  const { id } = useParams<{ id: string }>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [country, setCountry] = useState<IDetail | null>(null);
   const [visibleColumns, setVisibleColumns] = useState([
     'year',
     'population',
@@ -24,38 +18,14 @@ const Details = () => {
     'co2_per_capita',
   ]);
 
-  useEffect(() => {
-    const worker = new Worker(
-      new URL('../services/workers/workerDetail.ts', import.meta.url),
-      { type: 'module' }
-    );
-
-    worker.onmessage = (event) => {
-      if (event.data.error) {
-        console.log('Worker error: ', event.data.error);
-      } else {
-        setCountry(event.data);
-      }
-      setIsLoading(false);
-    };
-
-    worker.postMessage(id || defaultId);
-
-    return () => worker.terminate();
-  }, [id]);
-
-  if (isLoading) return <>Loading...</>;
-  if (!country) return <>No country found</>;
-
   return (
     <div className="results">
-      <h2>{`${country.name}: ${country.iso_code}`}</h2>
+      <h2>{`${country.name}: ${country.iso_code ?? 'N/a'}`}</h2>
       <button
         className="results_newColomn"
         onClick={() => setVisibleColumns((prev) => [...prev, 'asd'])}
       >
-        {' '}
-        Add new colomn
+        Add new column
       </button>
       <thead>
         <tr>
@@ -79,4 +49,19 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default function Details() {
+  const defaultId = 'Afghanistan';
+  const { id } = useParams<{ id: string }>();
+  const rawId = id ? decodeURIComponent(id) : defaultId;
+
+  const resource = useMemo(
+    () => wrapPromise(loadCountryDetail(rawId)),
+    [rawId]
+  );
+
+  return (
+    <Suspense fallback={<p>Loading details...</p>}>
+      <DetailsContent resource={resource} />
+    </Suspense>
+  );
+}

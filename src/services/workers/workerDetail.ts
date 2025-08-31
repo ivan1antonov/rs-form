@@ -1,26 +1,29 @@
 import data from '../../assets/owid-co2-data.json';
 
-interface IData {
-  year: number;
-  cement_co2: number;
-  cumulative_cement_co2: number;
-}
-
-export interface ICountryDetail {
-  iso_code: string;
-  data: IData[];
-}
-
 self.onmessage = (event) => {
   const countryId = event.data;
+  const [isoRaw, idxRaw] = countryId.split('-');
+
+  const nameCountry = isoRaw.trim();
+  const index = idxRaw !== undefined ? Number(idxRaw) : NaN;
 
   try {
-    const countryData = Object.entries(data).find(
-      (entry) => entry[1].iso_code === countryId
-    );
+    const entries = Object.entries(data);
+
+    let countryData = isoRaw
+      ? entries.find(([key]) => key?.trim() === nameCountry)
+      : undefined;
+    console.log(countryData);
+    if (isoRaw === 'N/a') {
+      countryData = entries[index];
+    }
 
     if (!countryData) {
-      throw new Error(`Country with key ${countryId} not found`);
+      const reason = isoRaw ? `iso=${isoRaw} not found` : 'iso not set';
+      const idxInfo = Number.isInteger(index)
+        ? `, index=${index}`
+        : ', index=NaN';
+      throw new Error(`Country not found: ${reason}${idxInfo}`);
     }
 
     const [countryName, details] = countryData;
