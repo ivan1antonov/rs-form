@@ -14,6 +14,7 @@ export interface ICountries {
   country: string;
   iso: string;
   population: number | 'N/a';
+  year: string;
 }
 
 interface IData {
